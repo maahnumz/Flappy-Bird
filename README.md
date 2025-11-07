@@ -3,17 +3,15 @@
 **Instructor:** Prof. Nicole Hamilton  
 **Platform:** Intel DE1-SoC FPGA Board + 16×16 Bi-Color LED Array  
 
----
 
-## 🧠 Project Overview
+##  Project Overview
 This project implements a hardware-based version of *Flappy Bird* entirely in **SystemVerilog** on the **DE1-SoC FPGA**.  
 It was the **final project (Lab 6)** for UW EE 271 *Intro to Digital Logic*, demonstrating full system-level digital design with real-time interactivity.
 
 The game logic is synthesized directly in hardware. The player controls a red “bird” LED that flaps upward when the push-button is pressed and falls due to gravity when released. Pipes (green LEDs) scroll horizontally across a **16×16 bi-color LED array**, creating an obstacle course. The player’s score is shown on the board’s HEX display.
 
----
 
-## ✨ Features
+##  Features
 - **Real-time gameplay** implemented fully in logic (no CPU/software).  
 - **Single-button control** (KEY input): press = flap up, release = fall down.  
 - **Scrolling pipe obstacles** rendered in green on the 16×16 LED array.  
@@ -22,9 +20,8 @@ The game logic is synthesized directly in hardware. The player controls a red �
 - **Clock divider** for smooth animation timing and gravity simulation.  
 - **Reset** switch to restart the game instantly.  
 
----
 
-## 🧱 System Design
+##  System Design
 The project is organized into modular SystemVerilog files:
 
 | File | Description |
@@ -41,9 +38,8 @@ The project is organized into modular SystemVerilog files:
 
 Each module was unit-tested in ModelSim and verified on the DE1-SoC board.
 
----
 
-## ⚙️ Hardware Requirements
+##  Hardware Requirements
 - **Intel/Altera DE1-SoC FPGA board**  
 - **16×16 bi-color (RED/GREEN) LED matrix display board**  
 - **VGA power/logic headers or GPIO pins connected to LED matrix**  
@@ -51,24 +47,21 @@ Each module was unit-tested in ModelSim and verified on the DE1-SoC board.
 - **1 switch (SW[0])** – reset game  
 - **7-segment HEX display** – score counter  
 
----
 
-## 🧪 Testing and Verification
+##  Testing and Verification
 - Each module simulated in **ModelSim** using custom testbenches.  
 - Timing verified by LED animation rate and stable frame updates.  
 - Final integration tested on hardware to confirm real-time response and collision accuracy.  
 
----
 
-## 📈 Results
+##  Results
 - Functional Flappy Bird game displayed on a 16×16 LED array.  
 - Responsive controls with smooth animation and gravity behavior.  
 - Correct pipe movement and collision detection.  
 - Stable score increment and reset operation verified by TA during lab check-off.  
 
----
 
-## 🛠 Tools Used
+##  Tools Used
 - **Intel Quartus II Lite Edition** (for synthesis and programming)  
 - **ModelSim-Altera Edition** (for simulation and debugging)  
 - **SystemVerilog HDL**  
