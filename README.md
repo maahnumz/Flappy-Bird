@@ -1,6 +1,8 @@
 # Flappy Bird on FPGA 🎮  
-**Course:** EE 271 – Digital Circuits and Systems, University of Washington  
-**Instructor:** Nicole Hamilton 
+**Course:** EE 271 – Digital Circuits and Systems, University of Washington
+
+**Instructor:** Nicole Hamilton
+
 **Platform:** Intel/Altera DE1-SoC FPGA Development Board  
 
 
