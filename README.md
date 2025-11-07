@@ -1,71 +1,81 @@
 # Flappy Bird on FPGA 🎮  
-**Course:** EE 271 – Digital Circuits and Systems, University of Washington
+**Course:** EE 271 – Digital Circuits and Systems, University of Washington  
+**Instructor:** Prof. Nicole Hamilton  
+**Platform:** Intel DE1-SoC FPGA Board + 16×16 Bi-Color LED Array  
 
-**Instructor:** Nicole Hamilton
-
-**Platform:** Intel/Altera DE1-SoC FPGA Development Board  
-
+---
 
 ## 🧠 Project Overview
-This project is a hardware implementation of the classic *Flappy Bird* game, built entirely in **SystemVerilog** on the **DE1-SoC FPGA board** and displayed on a **16×16 bi-color LED array board**.  
-It was completed as the **final lab (Lab 6)** in the UW *Intro to Digital Logic* course, which required designing a fully functional interactive digital system using finite state machines, counters, and synchronous logic.
+This project implements a hardware-based version of *Flappy Bird* entirely in **SystemVerilog** on the **DE1-SoC FPGA**.  
+It was the **final project (Lab 6)** for UW EE 271 *Intro to Digital Logic*, demonstrating full system-level digital design with real-time interactivity.
 
-The game recreates the core *Flappy Bird* mechanics: the player controls a red LED “bird” that rises when a button is pressed and falls under simulated gravity otherwise, while avoiding green LED “pipes” scrolling horizontally across the display. The score is tracked using the board’s built-in HEX displays.
+The game logic is synthesized directly in hardware. The player controls a red “bird” LED that flaps upward when the push-button is pressed and falls due to gravity when released. Pipes (green LEDs) scroll horizontally across a **16×16 bi-color LED array**, creating an obstacle course. The player’s score is shown on the board’s HEX display.
 
+---
 
-## 🧩 Features
-- **Real-time gameplay** executed entirely in FPGA logic (no CPU or software).  
-- **Button input:** KEY[0] acts as the bird’s flap control.  
-- **Gravity simulation:** Bird position updates continuously based on a timing counter.  
-- **Scrolling obstacles:** Green pipes move from right to left, with randomly generated vertical gaps.  
-- **Collision detection:** Determines game-over when the bird overlaps a pipe.  
-- **Score tracking:** Decimal score displayed on the DE1-SoC HEX displays.  
-- **Reset switch:** SW[0] resets the game state to restart play.  
-- **Display hardware:** Output rendered on a 16×16 bi-color LED matrix (red = bird, green = pipes).  
+## ✨ Features
+- **Real-time gameplay** implemented fully in logic (no CPU/software).  
+- **Single-button control** (KEY input): press = flap up, release = fall down.  
+- **Scrolling pipe obstacles** rendered in green on the 16×16 LED array.  
+- **Collision detection** between the red bird and green pipes triggers Game Over.  
+- **Score display** on the board’s 7-segment HEX output.  
+- **Clock divider** for smooth animation timing and gravity simulation.  
+- **Reset** switch to restart the game instantly.  
 
+---
 
 ## 🧱 System Design
-The design consists of multiple **SystemVerilog modules** connected in a hierarchical structure:
+The project is organized into modular SystemVerilog files:
 
-| Module | Description |
-| ------- | ------------ |
-| `flappy_top.sv` | Integrates all submodules and connects to DE1-SoC I/O pins and the LED matrix interface. |
-| `bird.sv` | Tracks the bird’s vertical position and applies upward motion when the button is pressed. |
-| `pipe_generator.sv` | Creates new pipe positions using a pseudo-random LFSR and scrolls them across the array. |
-| `collision.sv` | Detects overlap between the bird’s coordinates and the pipe pattern. |
-| `score_counter.sv` | Increments score whenever the bird successfully passes a pipe. |
-| `led_driver.sv` | Converts internal (x, y, color) states into row/column signals for the 16×16 bi-color LED array. |
-| `clock_divider.sv` | Generates slower timing signals from the 50 MHz system clock for movement and updates. |
+| File | Description |
+|:----|:-------------|
+| `DE1_SoC.sv` | Top-level integration module; connects all submodules and maps signals to board I/O (LED array, HEX, buttons, switches). |
+| `LEDDriver.sv` | Drives the 16×16 bi-color LED matrix using row/column scanning to display the bird and pipe patterns. |
+| `bird.sv` | Handles vertical movement logic based on gravity and button presses. |
+| `pipeShift.sv` | Generates and shifts pipe columns across the screen; creates openings at varying heights. |
+| `collision.sv` | Detects overlap between bird position and pipe positions to trigger game reset. |
+| `clock_divider.sv` | Divides the 50 MHz system clock into lower-frequency enable signals for animation and display updates. |
+| `button.sv` | Debounces mechanical button inputs to prevent false triggers. |
+| `Press.sv` | Implements single-pulse flap input logic derived from debounced button presses. |
+| `single_hex.sv` | Controls one HEX display digit for score output. |
 
-Each module was independently simulated in **ModelSim** before top-level integration and board testing.
+Each module was unit-tested in ModelSim and verified on the DE1-SoC board.
 
+---
 
 ## ⚙️ Hardware Requirements
-- **Intel/Altera DE1-SoC FPGA Board** (Cyclone V)  
-- **16×16 Bi-Color LED Array Board** connected via GPIO header  
-- **Power and USB-Blaster cable** for programming  
-- **Push-buttons and switches** on the DE1-SoC board  
+- **Intel/Altera DE1-SoC FPGA board**  
+- **16×16 bi-color (RED/GREEN) LED matrix display board**  
+- **VGA power/logic headers or GPIO pins connected to LED matrix**  
+- **1 push button (KEY[0])** – bird flap control  
+- **1 switch (SW[0])** – reset game  
+- **7-segment HEX display** – score counter  
 
+---
 
-## 🧪 Testing
-- Verified all submodules with ModelSim testbenches (`*.sv` + `.do` files).  
-- Hardware-tested using Quartus II Programmer on the physical board.  
-- Validated real-time response, smooth scrolling, and accurate collision logic.  
-- Used LEDs and HEX displays for debugging state transitions.  
+## 🧪 Testing and Verification
+- Each module simulated in **ModelSim** using custom testbenches.  
+- Timing verified by LED animation rate and stable frame updates.  
+- Final integration tested on hardware to confirm real-time response and collision accuracy.  
 
+---
 
 ## 📈 Results
-- Achieved fully playable *Flappy Bird* with clear red/green LED display.  
-- Stable, flicker-free animation across the 16×16 LED matrix.  
-- Correct scoring and reset functionality.  
-- Successfully demonstrated and checked off during the final lab presentation.
+- Functional Flappy Bird game displayed on a 16×16 LED array.  
+- Responsive controls with smooth animation and gravity behavior.  
+- Correct pipe movement and collision detection.  
+- Stable score increment and reset operation verified by TA during lab check-off.  
 
+---
 
 ## 🛠 Tools Used
-- **Quartus II / Intel FPGA Lite Edition**  
-- **ModelSim-Altera Edition** (simulation)  
-- **SystemVerilog** (HDL design)  
-- **DE1-SoC + 16×16 LED Array Board**
+- **Intel Quartus II Lite Edition** (for synthesis and programming)  
+- **ModelSim-Altera Edition** (for simulation and debugging)  
+- **SystemVerilog HDL**  
+- **DE1-SoC board GPIO interface documentation** (from UW EE 271 website)  
+
+
+
 
 
 
