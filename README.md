@@ -1,4 +1,4 @@
-# Flappy Bird on FPGA 🎮  
+# Flappy Bird on FPGA 
 **Course:** EE 271 – Digital Circuits and Systems, University of Washington  
 **Instructor:** Prof. Nicole Hamilton  
 **Platform:** Intel DE1-SoC FPGA Board + 16×16 Bi-Color LED Array  
